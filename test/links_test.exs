@@ -1,6 +1,6 @@
-defmodule SpydexTest do
+defmodule LinksTest do
   use ExUnit.Case
-  doctest Spydex
+  alias Link
   alias Spydex
 
   setup_all do
@@ -20,12 +20,10 @@ defmodule SpydexTest do
     {:ok, real_result: real_result, fake_result: fake_result}
   end
 
-  test "start - returns map with body", context do
-    assert context[:real_result].body |> is_binary
-  end
-
-  test "start - returns title in map", context do
-    assert context[:real_result].title == "danbickford.me"
+  test "links - returns list of links", context do
+    assert context[:fake_result]
+      |> Link.links 
+      == [["<a href=\"test\">test</a>"], ["<a onclick='tester'>tester</a>"]]
   end
 
 end

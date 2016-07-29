@@ -1,11 +1,13 @@
 defmodule Spydex do
 
+  alias Link
+
   def start(url) do
     data = url |> content
     %{
       url: url,
       title: data.body |> title,
-      links: data.body |> links,
+      links: data.body |> Link.links,
       body: data.body
     }
   end
@@ -22,9 +24,6 @@ defmodule Spydex do
       |> List.first
   end
 
-  def links(result, links \\ [])
-  def links(result, links) do
-    Regex.scan(~r"<a.*(?!<a)<\/a>", result)
-  end
+
 
 end
