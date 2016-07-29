@@ -5,7 +5,8 @@ defmodule Spydex do
     %{
       url: url,
       title: data.body |> title,
-      body: data.body  
+      links: data.body |> links,
+      body: data.body
     }
   end
 
@@ -19,6 +20,11 @@ defmodule Spydex do
       |> List.last
       |> String.split(~r"</title>")
       |> List.first
+  end
+
+  def links(result, links \\ [])
+  def links(result, links) do
+    Regex.scan(~r"<a.*(?!<a)<\/a>", result)
   end
 
 end
