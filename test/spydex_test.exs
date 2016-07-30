@@ -2,30 +2,28 @@ defmodule SpydexTest do
   use ExUnit.Case
   doctest Spydex
   alias Spydex
+  alias HtmlFactory
 
   setup_all do
-    real_result = "http://www.danbickford.com" |> Spydex.start 
-    fake_result = """
-      <html>
-        <head>
-          <title>Test</title>
-        </head>
-        <body>
-          <a href="test">test</a>
-          <h1>foo</h1>
-          <a onclick='tester'>tester</a>
-        </body>
-      </html>
-    """
-    {:ok, real_result: real_result, fake_result: fake_result}
+    fake_result = 
+      {
+        "http://test.com",
+        %{body: HtmlFactory.simple}
+      } |> Spydex.package
+    {:ok, fake_result: fake_result}
   end
 
-  test "start - returns map with body", context do
-    assert context[:real_result].body |> is_binary
+  test "parse - returns map with body", context do
+    assert context[:fake_result].body |> is_binary
   end
 
-  test "start - returns title in map", context do
-    assert context[:real_result].title == "danbickford.me"
+  test "parse - returns title in map", context do
+    assert context[:fake_result].title == "danbickford.me"
   end
 
+  test "h1 - returns list of h1 tags", context do
+    assert context[:fake_result].h1 
+    == ["<h1>foo</h1>", "<h1 style='color:black'>foo</h1>"]
+  end
+  
 end

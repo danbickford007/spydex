@@ -2,22 +2,30 @@ defmodule Spydex do
 
   alias Link
 
-  def start(url) do
-    data = url |> content
+  def parse(url) do
+    data = url |> content |> package
+  end
+
+  def package({url, data}) do
     %{
       url: url,
       title: data.body |> title,
       links: data.body |> Link.links,
+      h1: data.body |> h1,
       body: data.body
     }
   end
 
-  def content(url) do
+  defp content(url) do
     HTTPoison.start
-    HTTPoison.get! url 
+    {url, HTTPoison.get!(url)}
   end
 
-  def title(result) do
+  defp h1(html) do
+    html
+  end
+
+  defp title(result) do
     String.split(result, ~r"<title>")
       |> List.last
       |> String.split(~r"</title>")
