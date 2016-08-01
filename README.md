@@ -1,6 +1,6 @@
 # Spydex
 
-**TODO: Add description**
+HTML spider written in Elixir.
 
 ## Installation
 
