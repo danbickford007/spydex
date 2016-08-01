@@ -1,6 +1,7 @@
 defmodule Spydex do
 
   alias Link
+  alias Extractor
 
   def parse(url) do
     data = url |> content |> package
@@ -22,7 +23,7 @@ defmodule Spydex do
   end
 
   defp h1(html) do
-    html
+    html |> Extractor.find
   end
 
   defp title(result) do
